@@ -44,31 +44,24 @@ It is a long-term learning and experimentation platform.
 The following table describes the exact wiring used in this project.
 All connections match the GPIO definitions in the source code.
 
-## Wiring Connections:
- -----------------------------------------
- ESP8266 Pin  |  Component       | Pin
- -----------------------------------------
- 3V3         -->  OLED Display   | VCC
- GND         -->  OLED Display   | GND
- D2 (GPIO4)  -->  OLED Display   | SCL
- D1 (GPIO5)  -->  OLED Display   | SDA
- -----------------------------------------
- D5 (GPIO14) -->  Button 1 (DOT) | Pin 1
- GND         -->  Button 1       | Pin 2
- -----------------------------------------
- D6 (GPIO12) -->  Button 2 (DASH)| Pin 1
- GND         -->  Button 2       | Pin 2
- -----------------------------------------
- D7 (GPIO13) -->  Button 3 (ACT) | Pin 1
- GND         -->  Button 3       | Pin 2
- -----------------------------------------
- D8 (GPIO15) -->  Buzzer         | Positive (+)
- GND         -->  Buzzer         | Negative (-)
- -----------------------------------------
+> Note: All buttons use `INPUT_PULLUP` logic.  
+> Each button is connected between the GPIO pin and **GND**.
 
-### Note:
- All buttons use INPUT_PULLUP logic.
- Each button connects between the GPIO pin and GND.
+| ESP8266 (NodeMCU) | GPIO  | Component | Component Pin |
+|---|---:|---|---|
+| 3V3 | — | OLED (SSD1306) | VCC |
+| GND | — | OLED (SSD1306) | GND |
+| D2 | GPIO4 | OLED (SSD1306) | SCL |
+| D1 | GPIO5 | OLED (SSD1306) | SDA |
+| D5 | GPIO14 | Button 1 (DOT) | Pin 1 |
+| GND | — | Button 1 (DOT) | Pin 2 |
+| D6 | GPIO12 | Button 2 (DASH) | Pin 1 |
+| GND | — | Button 2 (DASH) | Pin 2 |
+| D7 | GPIO13 | Button 3 (ACTION) | Pin 1 |
+| GND | — | Button 3 (ACTION) | Pin 2 |
+| D8 | GPIO15 | Buzzer | Positive (+) |
+| GND | — | Buzzer | Negative (-) |
+
 
 ---
 
