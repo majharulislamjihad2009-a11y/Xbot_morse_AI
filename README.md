@@ -8,6 +8,13 @@ Idea and system design are original. AI is used as an assistant, not as a replac
 
 ---
 
+## Demo Video
+
+Watch the working demo of XBOT here:
+[https://www.youtube.com/watch?v=XXXXXXXX
+](https://youtu.be/4wdcZE37K-k?si=L-zrzTgDr2j7Nt8y)
+---
+
 ## Project Motivation
 
 XBOT was created to explore how modern AI systems can be integrated with extremely resource-constrained hardware.
