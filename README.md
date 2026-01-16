@@ -1,392 +1,196 @@
-# \# XBOT Morse AI Chatbot (ESP8266 + OLED)
+# XBOT Morse AI Chatbot (ESP8266 + OLED)
+
+XBOT is a hardware-based Morse code AI chatbot built on ESP8266 with a 0.96-inch OLED display.  
+The project combines Morse code input, real-time AI responses, and efficient memory management to create a compact, educational, and extensible embedded AI system.
+
+This project is designed, implemented, and tested by the author.  
+Idea and system design are original. AI is used as an assistant, not as a replacement for understanding.
+
+---
+
+## Project Motivation
+
+XBOT was created to explore how modern AI systems can be integrated with extremely resource-constrained hardware.
+
+Core goals:
+- Use Morse code as a minimal and universal human–machine interface
+- Run AI-assisted interactions on microcontrollers
+- Build real engineering skills across hardware, firmware, networking, and system design
+
+This is not a copy-paste project.  
+It is a long-term learning and experimentation platform.
+
+---
+
+## Key Features
+
+### Morse-Based Input System
+- Text input using dot (.) and dash (-) buttons
+- Custom Morse commands for:
+  - Send message to AI
+  - Backspace
+  - Space
+  - Clear input
+  - Toggle buzzer
+  - Open Morse library
+
+### AI Chatbot Integration
+- Connects to OpenRouter API
+- Uses DeepSeek chat model
+- Configurable system personality (default: JARVIS-style assistant)
+- Short, OLED-friendly responses
+
+### Advanced Display System
+- Smooth scrolling for long AI responses
+- Page indicators and scroll bar
+- Separate screens for:
+  - WiFi connection
+  - Morse input
+  - Sending animation
+  - Receiving state
+  - AI response view
+  - Error handling
+
+### Built-in Morse Library
+- On-device Morse reference
+- Scrollable character list
+- Learn Morse without external resources
+
+### Memory-Optimized Design
+- Designed for ESP8266 low-RAM limitations
+- Controlled chat history
+- Dynamic cleanup to reduce heap fragmentation
+- Safe handling of large API responses
+
+### Audio Feedback
+- Professional buzzer tones for:
+  - Dot and dash
+  - Successful actions
+  - Errors
+  - Send confirmation
+- Buzzer can be toggled on/off via Morse command
+
+---
+
+## Hardware Requirements
+
+- ESP8266 (NodeMCU recommended)
+- 0.96-inch OLED display (SSD1306, I2C)
+- Push buttons:
+  - Dot button
+  - Dash button
+  - Action button
+  - Scroll up
+  - Scroll down
+  - Back
+  - Library
+- Buzzer
+- Breadboard and jumper wires
 
-# 
+---
 
-# XBOT is a Morse-code–driven AI chatbot built on the ESP8266 platform.  
+## Pin Configuration (Default)
 
-# It allows users to communicate with an AI model using physical buttons instead of a keyboard, making AI interaction possible on low-resource embedded hardware.
+- Dot button: GPIO 14  
+- Dash button: GPIO 12  
+- Action button: GPIO 13  
+- Buzzer: GPIO 15  
+- Scroll up: GPIO 16  
+- Scroll down: GPIO 5  
+- Back: GPIO 4  
+- Library: GPIO 0  
+- OLED I2C: SDA = GPIO 5, SCL = GPIO 4  
 
-# 
+Pins can be changed from the source code if required.
 
-# This project focuses on human–computer interaction, embedded system design, memory optimization, and practical AI integration.
+---
 
-# 
+## Software Requirements
 
-# ---
+- Arduino IDE
+- ESP8266 board package
+- Required libraries:
+  - Adafruit GFX
+  - Adafruit SSD1306
+  - ArduinoJson
+  - ESP8266WiFi
+  - ESP8266HTTPClient
 
-# 
+---
 
-# \## Project Motivation
+## Configuration
 
-# Most AI interfaces assume access to a keyboard, touchscreen, or powerful hardware.  
+Before uploading the code, update the following fields:
+const char* WIFI_SSID = "YOUR_WIFI_SSID";
+const char* WIFI_PASS = "YOUR_WIFI_PASSWORD";
+const char* API_KEY   = "YOUR_OPENROUTER_API_KEY";
 
-# XBOT challenges that assumption by answering a simple question:
+API keys are not included in this repository for security reasons.
 
-# 
+---
 
-# \*\*Can modern AI be used through minimal physical input on constrained hardware?\*\*
+## User Guide
 
-# 
+1. Power on the device  
+2. Wait for WiFi connection  
+3. Enter Morse code using dot and dash buttons  
+4. Press ACTION to convert Morse into characters  
+5. Use the SEND command to send the message to AI  
+6. Read the AI response on the OLED display  
+7. Scroll using the scroll buttons if the response is long  
+8. Press BACK to return to the input screen  
 
-# Using Morse code as the input medium, XBOT demonstrates that AI interaction is possible even with:
+---
 
-# \- Limited memory
+## Customization
 
-# \- No keyboard
+You can modify the following parts of the project:
+- AI personality (system prompt)
+- Morse command patterns
+- Display layout and animations
+- Memory limits and response size
+- Hardware pin configuration
 
-# \- No touchscreen
+The code is structured to support easy experimentation and learning.
 
-# \- Simple button-based input
+---
 
-# 
+## Educational Value
 
-# ---
+This project demonstrates:
+- Embedded system design using ESP8266
+- Morse code decoding and command handling
+- HTTPS API communication on microcontrollers
+- JSON parsing with limited memory
+- Real-time UI rendering on small OLED displays
+- Memory optimization techniques for low-RAM devices
 
-# 
+---
 
-# \## What Makes This Project Unique
+## Author
 
-# 
+Developed by a Bangladeshi student (HSC 2027 batch) with interest in:
+- Embedded systems
+- AI-assisted tools
+- Low-level optimization
+- Building original projects from ideas
 
-# \### 1. Morse Code as a Full AI Input System
+---
 
-# Unlike typical Morse projects that only decode characters, XBOT uses Morse code as a \*\*complete text input interface\*\*.
+## Disclaimer
 
-# 
+This project is intended for educational and experimental purposes only.  
+Users are responsible for their own API usage, costs, and hardware safety.
 
-# \- Users type full sentences in Morse
+---
 
-# \- Special Morse commands trigger actions (send, backspace, clear, library)
+## Future Improvements
 
-# \- Morse input is treated as a first-class user interface, not a novelty
+- Offline AI support  
+- SD card logging  
+- Multi-language profiles  
+- Power optimization and battery support  
 
-# 
-
-# ---
-
-# 
-
-# \### 2. Embedded AI on Low-Memory Hardware
-
-# XBOT runs on an ESP8266, which has very limited RAM.
-
-# 
-
-# To make AI interaction possible:
-
-# \- Chat history is strictly limited and optimized
-
-# \- Responses are cleaned, truncated, and reformatted
-
-# \- Memory is actively monitored and freed during runtime
-
-# \- Large AI responses are split into OLED-friendly lines
-
-# 
-
-# This makes the system stable even under heavy usage.
-
-# 
-
-# ---
-
-# 
-
-# \### 3. OLED-Optimized AI Responses
-
-# AI responses are not displayed raw.
-
-# 
-
-# They are:
-
-# \- Cleaned from markdown and formatting
-
-# \- Converted to ASCII-safe characters
-
-# \- Split into readable line segments
-
-# \- Displayed with smooth scrolling
-
-# \- Navigable using physical buttons
-
-# 
-
-# This ensures long AI responses remain readable on a 128×64 OLED display.
-
-# 
-
-# ---
-
-# 
-
-# \### 4. Built-in Morse Library Browser
-
-# XBOT includes an interactive Morse library mode.
-
-# 
-
-# Features:
-
-# \- Scrollable list of Morse characters
-
-# \- One character per line for clarity
-
-# \- Cursor-based navigation
-
-# \- Accessible directly from Morse commands or a dedicated button
-
-# 
-
-# This makes XBOT both a \*\*learning tool\*\* and an \*\*AI interface\*\*.
-
-# 
-
-# ---
-
-# 
-
-# \### 5. Configurable AI Personality
-
-# The AI behavior is controlled through a system prompt stored in the code.
-
-# 
-
-# \- Default personality: calm, JARVIS-style assistant
-
-# \- Designed for short, OLED-friendly responses
-
-# \- Users can easily modify the system prompt to customize behavior
-
-# 
-
-# This separation makes the system flexible without changing core logic.
-
-# 
-
-# ---
-
-# 
-
-# \## Hardware Components
-
-# \- ESP8266 (NodeMCU)
-
-# \- 0.96" OLED Display (SSD1306)
-
-# \- Buttons:
-
-# &nbsp; - Dot
-
-# &nbsp; - Dash
-
-# &nbsp; - Action
-
-# &nbsp; - Scroll Up
-
-# &nbsp; - Scroll Down
-
-# &nbsp; - Back
-
-# &nbsp; - Library
-
-# \- Buzzer
-
-# \- Breadboard and jumper wires
-
-# 
-
-# > Note: Pin configuration follows my personal wiring.  
-
-# > Pins can be reassigned in the source code if needed.
-
-# 
-
-# ---
-
-# 
-
-# \## User Manual
-
-# 
-
-# \### Button Functions
-
-# 
-
-# \*\*Dot Button\*\*
-
-# \- Inputs a Morse dot
-
-# \- Scrolls up in menus and AI responses
-
-# 
-
-# \*\*Dash Button\*\*
-
-# \- Inputs a Morse dash
-
-# \- Scrolls down in menus and AI responses
-
-# 
-
-# \*\*Action Button\*\*
-
-# \- Converts Morse to text
-
-# \- Sends text to AI
-
-# \- Long press clears input or chat history
-
-# \- Exits menus
-
-# 
-
-# \*\*Back Button\*\*
-
-# \- Returns from AI response view
-
-# \- Exits library menu
-
-# 
-
-# \*\*Library Button\*\*
-
-# \- Opens the Morse code reference library
-
-# 
-
-# ---
-
-# 
-
-# \### Morse Commands
-
-# 
-
-# | Morse Pattern | Action |
-
-# |--------------|--------|
-
-# | `. - . - ..` | Send message to AI |
-
-# | `........` | Backspace |
-
-# | `. - . -` | Insert space |
-
-# | `----` | Clear input |
-
-# | `-.....-` | Toggle buzzer |
-
-# | `. - ....` | Open Morse library |
-
-# 
-
-# ---
-
-# 
-
-# \## How the System Works
-
-# 1\. User inputs Morse code using buttons  
-
-# 2\. Morse patterns are decoded into characters  
-
-# 3\. Text is accumulated in an input buffer  
-
-# 4\. On send command, the message is sent to the AI API  
-
-# 5\. The AI response is cleaned and processed  
-
-# 6\. Text is split into display-friendly lines  
-
-# 7\. Response is shown on the OLED with scrolling support  
-
-# 
-
-# ---
-
-# 
-
-# \## Software Design Highlights
-
-# \- State-machine–based system control
-
-# \- Active memory monitoring and cleanup
-
-# \- Optimized chat history management
-
-# \- Manual JSON parsing fallback for reliability
-
-# \- OLED-aware UI rendering
-
-# \- Hardware debounce handling
-
-# 
-
-# ---
-
-# 
-
-# \## Setup Instructions
-
-# 1\. Open `src/xbot.ino` in Arduino IDE  
-
-# 2\. Insert:
-
-# &nbsp;  - Your WiFi SSID
-
-# &nbsp;  - Your WiFi password
-
-# &nbsp;  - Your OpenRouter API key  
-
-# 3\. Upload the code to the ESP8266  
-
-# 4\. Power the device  
-
-# 5\. Start typing using Morse code  
-
-# 
-
-# ---
-
-# 
-
-# \## AI Usage Disclosure
-
-# \*\*The idea, system architecture, and integration design are my own.\*\*  
-
-# AI tools were used strictly as an assistant for debugging, optimization, and iteration.  
-
-# All final implementation decisions, logic, and system behavior were determined by me.
-
-# 
-
-# ---
-
-# 
-
-# \## Future Improvements
-
-# \- ESP32 version with expanded memory
-
-# \- Offline AI model support
-
-# \- SD card logging
-
-# \- Custom font rendering
-
-# \- More efficient response compression
-
-# 
-
-# ---
-
-# 
-
-# \## Author
-
-# HSC 2027 student from Bangladesh, learning embedded systems and AI by building real projects from ideas and curiosity.
 
 
 
