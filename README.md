@@ -22,6 +22,56 @@ It is a long-term learning and experimentation platform.
 
 ---
 
+## Hardware Requirements
+
+- ESP8266 (NodeMCU recommended)
+- 0.96-inch OLED display (SSD1306, I2C)
+- Push buttons:
+  - Dot button
+  - Dash button
+  - Action button
+  - Scroll up (Dash button)
+  - Scroll down (Dot button)
+  - Back (Action button)
+  - Library
+- Buzzer
+  - Sound feedbacks 
+
+---
+
+## Wiring Diagram (Text Reference)
+
+The following table describes the exact wiring used in this project.
+All connections match the GPIO definitions in the source code.
+
+## Wiring Connections:
+### -----------------------------------------
+### ESP8266 Pin  |  Component       | Pin
+### -----------------------------------------
+### 3V3         -->  OLED Display   | VCC
+### GND         -->  OLED Display   | GND
+### D2 (GPIO4)  -->  OLED Display   | SCL
+### D1 (GPIO5)  -->  OLED Display   | SDA
+### -----------------------------------------
+### D5 (GPIO14) -->  Button 1 (DOT) | Pin 1
+### GND         -->  Button 1       | Pin 2
+### -----------------------------------------
+### D6 (GPIO12) -->  Button 2 (DASH)| Pin 1
+### GND         -->  Button 2       | Pin 2
+### -----------------------------------------
+### D7 (GPIO13) -->  Button 3 (ACT) | Pin 1
+### GND         -->  Button 3       | Pin 2
+### -----------------------------------------
+### D8 (GPIO15) -->  Buzzer         | Positive (+)
+### GND         -->  Buzzer         | Negative (-)
+### -----------------------------------------
+
+### Note:
+### All buttons use INPUT_PULLUP logic.
+### Each button connects between the GPIO pin and GND.
+
+---
+
 ## Key Features
 
 ### Morse-Based Input System
@@ -72,23 +122,6 @@ It is a long-term learning and experimentation platform.
 
 ---
 
-## Hardware Requirements
-
-- ESP8266 (NodeMCU recommended)
-- 0.96-inch OLED display (SSD1306, I2C)
-- Push buttons:
-  - Dot button
-  - Dash button
-  - Action button
-  - Scroll up
-  - Scroll down
-  - Back
-  - Library
-- Buzzer
-- Breadboard and jumper wires
-
----
-
 ## Pin Configuration (Default)
 
 - Dot button: GPIO 14  
@@ -121,6 +154,7 @@ Pins can be changed from the source code if required.
 ## Configuration
 
 Before uploading the code, update the following fields:
+---
 const char* WIFI_SSID = "YOUR_WIFI_SSID";
 const char* WIFI_PASS = "YOUR_WIFI_PASSWORD";
 const char* API_KEY   = "YOUR_OPENROUTER_API_KEY";
@@ -169,11 +203,15 @@ This project demonstrates:
 
 ## Author
 
-Developed by a Bangladeshi student (HSC 2027 batch) with interest in:
-- Embedded systems
-- AI-assisted tools
-- Low-level optimization
-- Building original projects from ideas
+Developed by a Bangladeshi student (HSC 2027 batch) who focuses on building projects from real-life problems rather than tutorials.
+
+Strong interests include:
+- Embedded systems and low-level programming
+- Physics-inspired problem solving and system thinking
+- Human–machine interfaces using minimal hardware
+- AI-assisted tools built with clear understanding, not blind automation
+
+Most projects start from curiosity, experiments, and practical limitations, with an emphasis on learning how things work internally rather than just making them work.
 
 ---
 
